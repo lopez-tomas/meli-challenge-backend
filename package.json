@@ -11,10 +11,10 @@
   },
   "imports": {
     "#config/*": "./src/config/*",
-    "#routes/*": "./src/routes/*",
-    "#services/*": "./src/services/*",
-    "#interfaces/*": "./src/interfaces/*",
-    "#middlewares/*": "./src/middlewares/*"
+    "#routes/*": "./src/api/routes/*",
+    "#services/*": "./src/api/services/*",
+    "#interfaces/*": "./src/api/interfaces/*",
+    "#middlewares/*": "./src/api/middlewares/*"
   },
   "repository": {
     "type": "git",
