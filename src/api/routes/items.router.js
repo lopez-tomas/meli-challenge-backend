@@ -7,7 +7,7 @@ import { getItemSchema } from '#interfaces/items/item.dto.js'
 const router = express.Router()
 const service = new ItemsService()
 
-router.get('/', async (req, res) => {
+router.get('/', async (req, res, next) => {
   const { query } = url.parse(req.url, true)
 
   try {
@@ -15,14 +15,13 @@ router.get('/', async (req, res) => {
 
     res.status(200).json(response)
   } catch (error) {
-    console.error(error)
-    res.status(500).send(error)
+    next(error)
   }
 })
 
 router.get('/:id',
   validatorHandler(getItemSchema, 'params'),
-  async (req, res) => {
+  async (req, res, next) => {
     const { id } = req.params
 
     try {
@@ -30,8 +29,7 @@ router.get('/:id',
 
       res.status(200).json(item)
     } catch (error) {
-      console.error(error)
-      res.status(404).send(error)
+      next(error)
     }
   }
 )
