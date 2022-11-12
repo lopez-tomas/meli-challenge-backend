@@ -1,5 +1,6 @@
-import fetch from 'node-fetch'
 import { config, author } from '#config/index.js'
+import fetch from 'node-fetch'
+import boom from '@hapi/boom'
 
 class ItemsService {
   author;
@@ -44,7 +45,7 @@ class ItemsService {
         items,
       }
     } catch (error) {
-      throw new Error(error)
+      throw boom.badRequest('[GET ITEMS] - Error al obtener los items', error)
     }
   }
 
@@ -75,7 +76,7 @@ class ItemsService {
         item
       }
     } catch (error) {
-      throw new Error(error)
+      throw boom.notFound('[GET ITEM] - Error al obtener el item', error)
     }
   }
 
@@ -86,7 +87,7 @@ class ItemsService {
 
       return data.plain_text
     } catch (error) {
-      throw new Error(error)
+      throw boom.notFound('[GET ITEM DESC] - Error al obtener la descripción del item', error)
     }
   }
 }
