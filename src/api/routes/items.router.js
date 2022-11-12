@@ -7,6 +7,7 @@ const service = new ItemsService()
 
 router.get('/', async (req, res) => {
   const { query } = url.parse(req.url, true)
+
   try {
     const response = await service.getItems(query.search)
 
@@ -18,7 +19,16 @@ router.get('/', async (req, res) => {
 })
 
 router.get('/:id', async (req, res) => {
-  res.send('You have reached the items/:id router')
+  const { id } = req.params
+
+  try {
+    const item = await service.getItem(id)
+
+    res.status(200).json(item)
+  } catch (error) {
+    console.error(error)
+    res.status(404).send(error)
+  }
 })
 
 export {
