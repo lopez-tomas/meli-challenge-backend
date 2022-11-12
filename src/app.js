@@ -1,5 +1,6 @@
 import express from 'express'
 import cors from 'cors'
+import { router } from '#routes/index.js'
 import { config } from '#config/index.js'
 
 const app = express()
@@ -21,16 +22,14 @@ const options = {
 app.use(cors(options));
 
 app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
-
-app.get('/api', (req, res) => {
   res.send(`
     Routes:<br />
     /api/items<br />
     /api/items/:id<br />
   `)
 })
+
+router(app)
 
 app.listen(port, () => {
   env == 'dev' && console.log(`Listening at http://localhost:${port}`)
