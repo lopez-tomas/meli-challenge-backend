@@ -1,7 +1,16 @@
 import fetch from 'node-fetch'
-import { config } from '#config/index.js'
+import { config, author } from '#config/index.js'
 
 class ItemsService {
+  author;
+
+  constructor() {
+    this.author = {
+      name: author.name,
+      lastname: author.lastname,
+    }
+  }
+
   async getItems(query) {
     try {
       const response = await fetch(`${config.apiSearchUrl}?q=${query}`)
@@ -30,13 +39,52 @@ class ItemsService {
       ))
 
       return {
-        author: {
-          name: `${config.authorName}`,
-          lastname: `${config.authorLastname}`
-        },
+        author: this.author,
         categories,
         items,
       }
+    } catch (error) {
+      throw new Error(error)
+    }
+  }
+
+  async getItem(id) {
+    try {
+      const itemResponse = await fetch(`${config.apiItemsUrl}/${id}`)
+      const itemData = await itemResponse.json()
+
+      const description = await this.getItemDescription(id)
+
+      const item = {
+        id: itemData.id,
+        title: itemData.title,
+        price: {
+          currency: itemData.currency_id,
+          amount: Math.trunc(itemData.price),
+          decimals: itemData.price - Math.trunc(itemData.price)
+        },
+        picture: itemData.thumbnail,
+        condition: itemData.condition,
+        free_shipping: itemData.shipping.free_shipping,
+        sold_quantity: itemData.sold_quantity,
+        description: description
+      }
+
+      return {
+        author: this.author,
+        item
+      }
+    } catch (error) {
+      throw new Error(error)
+    }
+  }
+
+  async getItemDescription(id) {
+    try {
+      const response = await fetch(`${config.apiItemsUrl}/${id}/description`)
+      const data = await response.json()
+
+      return data.plain_text
     } catch (error) {
       throw new Error(error)
     }
