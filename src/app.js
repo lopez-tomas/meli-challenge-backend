@@ -3,6 +3,8 @@ import cors from 'cors'
 import { router } from '#routes/index.js'
 import { config } from '#config/index.js'
 
+import { logErrors, errorHandler, boomErrorHandler } from '#middlewares/error.handler.js'
+
 const app = express()
 const port = config.port
 const env = config.env
@@ -30,6 +32,10 @@ app.get('/', (req, res) => {
 })
 
 router(app)
+
+app.use(logErrors)
+app.use(boomErrorHandler)
+app.use(errorHandler)
 
 app.listen(port, () => {
   env == 'dev' && console.log(`Listening at http://localhost:${port}`)
