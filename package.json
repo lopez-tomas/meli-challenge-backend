@@ -1,0 +1,46 @@
+{
+  "name": "meli-challenge-backend",
+  "version": "1.0.0",
+  "description": "Backend para el Test Práctico de Front-end para Mercado Libre.",
+  "main": "src/app.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "imports": {
+    "#config/*": "./src/config/*",
+    "#routes/*": "./src/routes/*",
+    "#services/*": "./src/services/*",
+    "#interfaces/*": "./src/interfaces/*",
+    "#middlewares/*": "./src/middlewares/*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lopez-tomas/meli-challenge-backend.git"
+  },
+  "keywords": [
+    "NodeJS",
+    "Express",
+    "Backend",
+    "MeLi",
+    "MercadoLibre"
+  ],
+  "author": "Tomás López",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lopez-tomas/meli-challenge-backend/issues"
+  },
+  "homepage": "https://github.com/lopez-tomas/meli-challenge-backend#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  },
+  "dependencies": {
+    "@hapi/boom": "^10.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "joi": "^17.7.0"
+  }
+}
