@@ -1,7 +1,7 @@
 import { config, author } from '#config/index.js'
 import fetch from 'node-fetch'
 import boom from '@hapi/boom'
-import { getSellerNicknameFromUrl, capitalizeFirstLetter } from '#utils/index.js'
+import { translateItemCondition, getSellerNicknameFromUrl, capitalizeFirstLetter } from '#utils/index.js'
 
 class ItemsService {
   author;
@@ -35,7 +35,7 @@ class ItemsService {
             decimals: item.price - Math.trunc(item.price)
           },
           picture: item.thumbnail,
-          condition: item.condition,
+          condition: translateItemCondition(item.condition),
           free_shipping: item.shipping.free_shipping,
           seller: {
             id: item.seller.id,
@@ -82,7 +82,7 @@ class ItemsService {
           decimals: data.price - Math.trunc(data.price)
         },
         picture: data.thumbnail,
-        condition: data.condition,
+        condition: translateItemCondition(data.condition),
         free_shipping: data.shipping.free_shipping,
         sold_quantity: data.sold_quantity,
         description: description,
