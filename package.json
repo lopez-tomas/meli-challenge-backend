@@ -14,7 +14,8 @@
     "#routes/*": "./src/api/routes/*",
     "#services/*": "./src/api/services/*",
     "#interfaces/*": "./src/api/interfaces/*",
-    "#middlewares/*": "./src/api/middlewares/*"
+    "#middlewares/*": "./src/api/middlewares/*",
+    "#utils/*": "./src/api/utils/*"
   },
   "repository": {
     "type": "git",
