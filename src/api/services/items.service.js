@@ -51,6 +51,11 @@ class ItemsService {
               state: item.seller_address.state.name,
               country: item.seller_address.country.name,
             }
+          },
+          installments: {
+            quantity: item.installments.quantity,
+            amount: item.installments.amount,
+            rate: item.installments.rate,
           }
         }
       ))
