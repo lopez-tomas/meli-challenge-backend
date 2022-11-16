@@ -56,7 +56,7 @@ class ItemsService {
 
       const description = await this.getItemDescription(id)
       const categoryName = await this.getItemCategoryName(data.category_id)
-      const seller = await this.getItemSeller(data.seller.id)
+      // const seller = await this.getItemSeller(data.seller_id)
 
       const item = {
         id: data.id,
@@ -64,7 +64,7 @@ class ItemsService {
         price: {
           currency: data.currency_id,
           amount: Math.trunc(data.price),
-          decimals: data.price - Math.trunc(itemData.price)
+          decimals: data.price - Math.trunc(data.price)
         },
         picture: data.thumbnail,
         condition: data.condition,
@@ -81,15 +81,15 @@ class ItemsService {
       return {
         author: this.author,
         item,
-        seller: {
-          ...seller,
-          location: {
-            neighborhood: data.seller_address.search_location.neighborhood.name,
-            city: data.seller_address.city.name,
-            state: data.seller_address.state.name,
-            country: data.seller_address.country.name,
-          }
-        },
+        // seller: {
+        //   ...seller,
+        //   location: {
+        //     neighborhood: data.seller_address.search_location.neighborhood.name,
+        //     city: data.seller_address.city.name,
+        //     state: data.seller_address.state.name,
+        //     country: data.seller_address.country.name
+        //   }
+        // }
       }
     } catch (error) {
       throw boom.notFound('[GET ITEM] - Error al obtener el item', error)
@@ -123,12 +123,14 @@ class ItemsService {
       const response = await fetch(`${config.apiSellersUrl}/${id_seller}`)
       const data = await response.json()
 
-      return {
+      const seller = {
         id: data.id,
         nickname: data.nickname,
         title: data.seller_reputation.power_seller_status,
         level: data.seller_reputation.level_id,
       }
+
+      return seller
     } catch (error) {
       throw boom.notFound('[GET SELLER] - Error al obtener el vendedor del item', error)
     }
