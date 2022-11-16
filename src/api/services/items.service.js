@@ -1,6 +1,7 @@
 import { config, author } from '#config/index.js'
 import fetch from 'node-fetch'
 import boom from '@hapi/boom'
+import { getSellerNicknameFromUrl, capitalizeFirstLetter } from '#utils/index.js'
 
 class ItemsService {
   author;
@@ -35,7 +36,22 @@ class ItemsService {
           },
           picture: item.thumbnail,
           condition: item.condition,
-          free_shipping: item.shipping.free_shipping
+          free_shipping: item.shipping.free_shipping,
+          seller: {
+            id: item.seller.id,
+            nickname: getSellerNicknameFromUrl(item.seller.permalink),
+            title: capitalizeFirstLetter(item.seller.seller_reputation.power_seller_status),
+            level: item.seller.seller_reputation.level_id,
+            sales: {
+              period: item.seller.seller_reputation.metrics.sales.period,
+              completed: item.seller.seller_reputation.metrics.sales.completed,
+            },
+            location: {
+              city: item.seller_address.city.name,
+              state: item.seller_address.state.name,
+              country: item.seller_address.country.name,
+            }
+          }
         }
       ))
 
