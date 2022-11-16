@@ -51,29 +51,45 @@ class ItemsService {
 
   async getItem(id) {
     try {
-      const itemResponse = await fetch(`${config.apiItemsUrl}/${id}`)
-      const itemData = await itemResponse.json()
+      const response = await fetch(`${config.apiItemsUrl}/${id}`)
+      const data = await response.json()
 
       const description = await this.getItemDescription(id)
+      const categoryName = await this.getItemCategoryName(data.category_id)
+      const seller = await this.getItemSeller(data.seller.id)
 
       const item = {
-        id: itemData.id,
-        title: itemData.title,
+        id: data.id,
+        title: data.title,
         price: {
-          currency: itemData.currency_id,
-          amount: Math.trunc(itemData.price),
-          decimals: itemData.price - Math.trunc(itemData.price)
+          currency: data.currency_id,
+          amount: Math.trunc(data.price),
+          decimals: data.price - Math.trunc(itemData.price)
         },
-        picture: itemData.thumbnail,
-        condition: itemData.condition,
-        free_shipping: itemData.shipping.free_shipping,
-        sold_quantity: itemData.sold_quantity,
-        description: description
+        picture: data.thumbnail,
+        condition: data.condition,
+        free_shipping: data.shipping.free_shipping,
+        sold_quantity: data.sold_quantity,
+        description: description,
+        category: categoryName,
+        available_quantity: data.available_quantity,
+        attributes: [...data.attributes],
+        warranty: data.warranty,
+        sale_terms: [...data.sale_terms],
       }
 
       return {
         author: this.author,
-        item
+        item,
+        seller: {
+          ...seller,
+          location: {
+            neighborhood: data.seller_address.search_location.neighborhood.name,
+            city: data.seller_address.city.name,
+            state: data.seller_address.state.name,
+            country: data.seller_address.country.name,
+          }
+        },
       }
     } catch (error) {
       throw boom.notFound('[GET ITEM] - Error al obtener el item', error)
@@ -88,6 +104,33 @@ class ItemsService {
       return data.plain_text
     } catch (error) {
       throw boom.notFound('[GET ITEM DESC] - Error al obtener la descripción del item', error)
+    }
+  }
+
+  async getItemCategoryName(id_category) {
+    try {
+      const response = await fetch(`${config.apiCategoriesUrl}/${id_category}`)
+      const data = await response.json()
+
+      return data.name
+    } catch (error) {
+      throw boom.notFound('[GET ITEM CATEGORY] - Error al obtener la categoría del item', error)
+    }
+  }
+
+  async getItemSeller(id_seller) {
+    try {
+      const response = await fetch(`${config.apiSellersUrl}/${id_seller}`)
+      const data = await response.json()
+
+      return {
+        id: data.id,
+        nickname: data.nickname,
+        title: data.seller_reputation.power_seller_status,
+        level: data.seller_reputation.level_id,
+      }
+    } catch (error) {
+      throw boom.notFound('[GET SELLER] - Error al obtener el vendedor del item', error)
     }
   }
 }
