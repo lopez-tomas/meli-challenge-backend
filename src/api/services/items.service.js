@@ -56,7 +56,6 @@ class ItemsService {
 
       const description = await this.getItemDescription(id)
       const categoryName = await this.getItemCategoryName(data.category_id)
-      // const seller = await this.getItemSeller(data.seller_id)
 
       const item = {
         id: data.id,
@@ -80,16 +79,7 @@ class ItemsService {
 
       return {
         author: this.author,
-        item,
-        // seller: {
-        //   ...seller,
-        //   location: {
-        //     neighborhood: data.seller_address.search_location.neighborhood.name,
-        //     city: data.seller_address.city.name,
-        //     state: data.seller_address.state.name,
-        //     country: data.seller_address.country.name
-        //   }
-        // }
+        item
       }
     } catch (error) {
       throw boom.notFound('[GET ITEM] - Error al obtener el item', error)
