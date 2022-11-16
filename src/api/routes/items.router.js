@@ -1,5 +1,4 @@
 import express from 'express'
-import url from 'url'
 import ItemsService from '#services/items.service.js'
 import { validatorHandler } from '#middlewares/validator.handler.js'
 import { getItemSchema } from '#interfaces/items/item.dto.js'
@@ -8,10 +7,8 @@ const router = express.Router()
 const service = new ItemsService()
 
 router.get('/', async (req, res, next) => {
-  const { query } = url.parse(req.url, true)
-
   try {
-    const response = await service.getItems(query.search)
+    const response = await service.getItems(req.query.q)
 
     res.status(200).json(response)
   } catch (error) {
