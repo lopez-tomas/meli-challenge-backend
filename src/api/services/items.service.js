@@ -96,6 +96,7 @@ class ItemsService {
         attributes: [...data.attributes],
         warranty: data.warranty,
         sale_terms: [...data.sale_terms],
+        pictures: [...data.pictures],
       }
 
       return {
