@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "name": "meli-challenge-backend",
+  "builds": [
+    { "src": "src/app.js", "use": "@vercel/node" }
+  ],
+  "routes": [
+    { "src": "/(.*)", "dest": "/app.js" }
+  ]
+}
